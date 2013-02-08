@@ -85,7 +85,7 @@ namespace MatrixReducer
 \maketitle
 ";
         static string LatexFooter = @"\end{document}";
-        static void Main(string[] args)
+        static void OldMain(string[] args)
         {
             string LaTeXCode = LatexHeader;
             Console.WriteLine("Enter x, space y then press enter for a matrix of that size. Ex: 4 4");
@@ -162,6 +162,55 @@ namespace MatrixReducer
                 Console.WriteLine();
             }
             //stage 2: uncover covered rows
+            Console.ReadKey();
+        }
+        static void Main(string[] args)
+        {
+            //Matrix a = new double[,]{
+            //    {8,9},
+            //    {5,-1}
+            //};
+            //Matrix b = new double[,]{
+            //    {-2,3},
+            //    {4,0},
+            //};
+            ////a = Console.In.ReadMatrix();
+            //Console.WriteLine(a);
+            //Console.WriteLine(b);
+            //Console.WriteLine(a * b);
+            //Console.WriteLine(b * a);
+            //Console.WriteLine(a * 2);
+            //Console.WriteLine(2 * a);
+            Matrix matrix =
+                new double[,]{
+                    {1,2,-3,-4},
+                    {-1,2,3.4,3.14159},
+                    {-42,-42,-42,11},
+                    {12,243,4,4}
+            //{3,5,11,-47,1},
+            //        {1,1,1,1,2},
+            //        {0,4,-12,4,4}
+            //{1,2,3,4,5},
+            //        {0,1,2,3,4},
+            //        {0,0,0,1,2}
+                };
+            matrix = Console.In.ReadMatrix();
+            matrix.RecordingHistory = true;
+            matrix.RREF();
+            System.IO.File.WriteAllText("newTest.ltx",LatexWriter.ProcessMatrixOperations(matrix));
+            foreach (var historyEvent in matrix.operationHistory)
+            {
+                var swap = historyEvent as MatrixHistory.SwapRows;
+                var mult = historyEvent as MatrixHistory.MultiplyRow;
+                var addMult = historyEvent as MatrixHistory.AddMultiplesToRow;
+                if (swap !=null)
+                    Console.WriteLine("Swapping rows {0} and {1}", swap.fromRow + 1, swap.toRow + 1);
+                if (mult != null)
+                    Console.WriteLine("Multiplying row {0} by {1}", mult.row + 1, mult.factor);
+                if (addMult != null)
+                    Console.WriteLine("Add {0} times row {1} to row {2}", addMult.factor, addMult.fromRow + 1, addMult.toRow + 1);
+            }
+            Console.WriteLine(matrix);
             Console.ReadKey();
         }
     }
