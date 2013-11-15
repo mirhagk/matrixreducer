@@ -62,6 +62,16 @@ namespace MatrixReducer
                 else
                     throw new ArgumentException("Identity matrices must be square matrices");
         }
+        public Matrix(double[,] matrix):this(matrix.GetLength(0), matrix.GetLength(1))
+        {
+            for (int r = 0; r < rows; r++)
+            {
+                for (int c = 0; c < columns; c++)
+                {
+                    values[r, c] = matrix[r, c];
+                }
+            }
+        }
         public Matrix RemoveRow(int row)
         {
             Matrix matrix = new Matrix(Rows - 1, Columns);
@@ -86,7 +96,7 @@ namespace MatrixReducer
             get
             {
                 if (!IsSquare)
-                    throw new ArithmeticException("Can't do a dertimant of a non-square matrix");
+                    throw new ArithmeticException("Can't do a determinant of a non-square matrix");
                 if (Columns == 1)
                     return this[1, 1];
                 Matrix withoutFirstRow = RemoveRow(1);

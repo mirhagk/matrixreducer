@@ -166,6 +166,8 @@ namespace MatrixReducer
         }
         static void Main(string[] args)
         {
+            Test.RunAllTests();
+            return;
             //Matrix a = new double[,]{
             //    {8,9},
             //    {5,-1}
