@@ -62,6 +62,44 @@ namespace MatrixReducer
                 else
                     throw new ArgumentException("Identity matrices must be square matrices");
         }
+        public Matrix RemoveRow(int row)
+        {
+            Matrix matrix = new Matrix(Rows - 1, Columns);
+            for (int r = 1; r <= Rows; r++)
+            {
+                if (r == row)
+                    continue;
+                for (int c = 1; c <= Columns; c++)
+                {
+                    matrix[r - (r > row ? 1 : 0), c] = this[r, c];
+                }
+            }
+            return matrix;
+        }
+        public Matrix RemoveColumn(int column)
+        {
+            //duplicating code is evil
+            return Transpose().RemoveRow(column).Transpose();
+        }
+        public double Determinant
+        {
+            get
+            {
+                if (!IsSquare)
+                    throw new ArithmeticException("Can't do a dertimant of a non-square matrix");
+                if (Columns == 1)
+                    return this[1, 1];
+                Matrix withoutFirstRow = RemoveRow(1);
+                double result = 0;
+                //The algorithm basically consists of taking each thing in the first row and multiplying it by the determinant of a matrix without it.
+                for (int c = 1; c <= Columns; c++)
+                {
+                    Matrix subMatrix = withoutFirstRow.RemoveColumn(c);
+                    result += (c % 2 == 0 ? -1 : 1) * this[1, c] * subMatrix.Determinant;
+                }
+                return result;
+            }
+        }
 
         public bool RecordingHistory
         {
