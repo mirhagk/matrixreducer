@@ -9,11 +9,8 @@ namespace MatrixReducer
     {
         class TestMatrix
         {
-            public double[,] Dimensions = {
-                                                     {4,6},
-                                                     {3,8}
-                                                 };
-            public double Determinant = 14;
+            public double[,] Dimensions;
+            public double Determinant;
             public TestMatrix(double[,] dimensions, double determinant)
             {
                 Dimensions = dimensions;
